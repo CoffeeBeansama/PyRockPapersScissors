@@ -3,7 +3,7 @@ from level import Level
 
 class Game:
     def __init__(self):
-        self.window = pg.display.set_mode((800,700))
+        self.window = pg.display.set_mode((800,500))
         self.clock = pg.time.Clock()
         pg.display.set_caption("PyMortalKombat")
         self.running = True
@@ -18,8 +18,8 @@ class Game:
                     self.running = False
                     pg.quit()
 
-            self.level.update()
             self.window.fill("black")
+            self.level.update()
             pg.display.update()
 
 
