@@ -10,6 +10,7 @@ class Player:
         self.object = object
         print(f"{self.name}: {self.object}")
 
+
     def update(self,turn):
         print(self.name)
 

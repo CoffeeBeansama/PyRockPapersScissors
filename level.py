@@ -41,38 +41,38 @@ class Level:
         self.getUiPressed(self.scissors,mousePos,mousePressed,"Scissor")
 
     def getObjectPressed(self,object):
-        self.playerObjects[self.turn] = object
+        self.player1Data.setObject(object)
 
     def evaluateWinner(self):
+
         player1 = self.player1Data.object
         player2 = self.player2Data.object
 
-        if self.playerObjects[1] is not None:
-            draw = player1 == player2
+        if player1 and player2 is None: return
 
-            if draw:
-                print("Its a draw!!")
-            else:
-                if player1 == "Rock":
-                    if player2 == "Scissor":
-                        print("Player 1 win")
-                    else:
-                        print("Player 2 win")
-                elif player1 == "Paper":
-                    if player2 == "Rock":
-                        print("Player 1 win")
-                    else:
-                        print("Player 2 win")
-                elif player1 == "Scissor":
-                    if player2 == "Paper":
-                        print("Player 1 win")
-                    else:
-                        print("Player 2 win")
+        draw = player1 == player2
+        if draw:
+            print("Its a draw!!")
+        else:
+            if player1 == "Rock":
+                if player2 == "Scissor":
+                    print(f"Player {self.player1Data.id} win")
+                else:
+                    print(f"Player {self.player2Data.id} win")
+            elif player1 == "Paper":
+                if player2 == "Rock":
+                    print(f"Player {self.player1Data.id} win")
+                else:
+                    print(f"Player {self.player2Data.id} win")
+            elif player1 == "Scissor":
+                if player2 == "Paper":
+                    print(f"Player {self.player1Data.id} win")
+                else:
+                    print(f"Player {self.player2Data.id} win")
 
-            for i in range(len(self.playerObjects)):
-                self.playerObjects[i] = None
+        self.player1Data.object = None
+        self.player2Data.object = None
 
-            self.turn = 0
 
 
 
@@ -83,14 +83,10 @@ class Level:
 
     def getUiPressed(self,ui,mousePos,mousePressed,getObject):
         if not self.timer.activated:
-
             if ui.collidepoint(mousePos) and not self.turnFinished:
                 if mousePressed[0]:
                     self.getObjectPressed(getObject)
-
-                    self.turn += 1
                     self.evaluateWinner()
-
                     self.turnFinished = True
                     self.timer.activate()
 
@@ -100,10 +96,10 @@ class Level:
         self.timer.update()
         self.player2Data = self.netWork.send(self.player1Data)
 
+
         self.players = [self.player1Data, self.player2Data]
 
-        print(f"Player 1: {self.player1Data.object}")
-        print(f"Player 2: {self.player2Data.object}")
+
 
         self.handleUiEvent()
 
