@@ -1,4 +1,4 @@
 
 class NetWorkData:
-    def __init__(self):
+    def __init__(self,i):
         pass

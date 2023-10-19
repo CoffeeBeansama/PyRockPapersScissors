@@ -9,8 +9,11 @@ class Game:
         self.running = True
         self.level = Level()
 
+
+
     def run(self):
         while self.running:
+
             self.clock.tick(60)
             pg.display.set_caption(f"fps: {str(round(self.clock.get_fps()))}")
             for event in pg.event.get():
@@ -18,9 +21,11 @@ class Game:
                     self.running = False
                     pg.quit()
 
+
             self.window.fill("black")
             self.level.update()
             pg.display.update()
+
 
 
 

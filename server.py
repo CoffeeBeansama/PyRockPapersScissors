@@ -1,59 +1,67 @@
 import socket
 from _thread import *
 import pickle
-from networkData import NetWorkData
+from player import Player
 
-server = "192.168.1.10"
-port = 5555
+class Server:
+    def __init__(self):
+        self.server = "192.168.1.4"
 
-s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        self.port = 5555
 
-try:
-    s.bind((server,port))
-except socket.error as e:
-    print(e)
+        self._socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 
-s.listen()
-print("Waiting for connection...Server started!")
+        self.players = [Player(0,"PLayer 1"), Player(1,"PLayer 2")]
 
-players = [NetWorkData(),NetWorkData()]
+        self.gameIdCount = 0
 
-gameIdCount = 0
+        self.startServer()
 
-def threadedClient(conn,player):
-    conn.send(pickle.dumps(players[player]))
-    reply = ""
-    while True:
+        self.currentPlayers = 0
+
+    def startServer(self):
         try:
-            data = pickle.loads(conn.recv(2048))
-            players[player] = data
-            if not data:
-                break
-            else:
-                if player == 1:
-                    reply = players[0]
+            self._socket.bind((self.server,self.port))
+        except socket.error as e:
+            print(e)
+
+        self._socket.listen()
+        print("Waiting for connection...Server started!")
+
+
+    def threadedClient(self,conn,player):
+        conn.send(pickle.dumps(self.players[player]))
+        reply = ""
+        while True:
+            try:
+                data = pickle.loads(conn.recv(2048))
+                self.players[player] = data
+                if not data:
+                    break
                 else:
-                    reply = players[1]
+                    if player == 1:
+                        reply = self.players[0]
+                    else:
+                        reply = self.players[1]
 
-            conn.sendall(pickle.dumps(reply))
-        except:
-            break
+                conn.sendall(pickle.dumps(reply))
+            except:
+                break
+        print("Connection lost")
+        conn.close()
 
-    print("Connection lost")
-    conn.close()
-
-
-currentPlayers = 0
-while True:
-    conn,addr = s.accept()
-    start_new_thread(threadedClient,(conn,currentPlayers))
-    currentPlayers += 1
-    if currentPlayers >= 3:
-        currentPlayers -= 1
-
-
-
+    def run(self):
+        while True:
+            conn,addr = self._socket.accept()
+            start_new_thread(self.threadedClient,(conn,self.currentPlayers))
+            self.currentPlayers += 1
+            if self.currentPlayers >= 3:
+                self.currentPlayers -= 1
 
 
+
+
+server = Server()
+server.run()
 
 
