@@ -11,7 +11,7 @@ class Server:
 
         self._socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 
-        self.players = [Player(0,"PLayer 1"), Player(1,"PLayer 2")]
+        self.players = [Player(0,"Player 1"), Player(1,"Player 2")]
 
         self.gameIdCount = 0
 

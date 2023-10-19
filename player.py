@@ -5,6 +5,7 @@ class Player:
         self.id = id
         self.object = object
         self.name = name
+        self.score = 0
 
 
     def setObject(self,object):
@@ -13,6 +14,5 @@ class Player:
     def reset(self):
         self.object = None
 
-    def update(self,turn):
-        print(self.name)
+
 
