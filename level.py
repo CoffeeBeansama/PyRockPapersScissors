@@ -22,11 +22,13 @@ class Level:
         self.paper = self.screen.blit(self.sprites["Paper"].convert_alpha(), (340, 180))
         self.scissors = self.screen.blit(self.sprites["Scissor"].convert_alpha(), (480, 180))
 
-        self.turnFinished = False
+        self.buttonClicked = False
 
-        self.playerObjects = [None,None]
 
-        self.timer = Timer(300,self.resetTurn)
+
+        self.timer = Timer(500,self.resetTurn)
+
+
 
     def handleUiEvent(self):
         mousePos = pg.mouse.get_pos()
@@ -44,50 +46,60 @@ class Level:
         self.player1Data.setObject(object)
 
     def evaluateWinner(self):
-
         player1 = self.player1Data.object
         player2 = self.player2Data.object
 
-        if player1 and player2 is None: return
+        if player2 and player1:
+            draw = player1 == player2
 
-        draw = player1 == player2
-        if draw:
-            print("Its a draw!!")
-        else:
-            if player1 == "Rock":
-                if player2 == "Scissor":
-                    print(f"Player {self.player1Data.id} win")
-                else:
-                    print(f"Player {self.player2Data.id} win")
-            elif player1 == "Paper":
-                if player2 == "Rock":
-                    print(f"Player {self.player1Data.id} win")
-                else:
-                    print(f"Player {self.player2Data.id} win")
-            elif player1 == "Scissor":
-                if player2 == "Paper":
-                    print(f"Player {self.player1Data.id} win")
-                else:
-                    print(f"Player {self.player2Data.id} win")
+            print(f"player 1: {player1}")
+            print(f"player 2: {player2}")
 
-        self.player1Data.object = None
-        self.player2Data.object = None
+            if draw:
+                print("Its a draw!!")
+                self.player1Data.reset()
+                self.player2Data.reset()
+            else:
+                if player1 == "Rock":
+                    if player2 == "Scissor":
+                        print(f"Player {self.player1Data.id} win")
+                    else:
+                        print(f"Player {self.player2Data.id} win")
+                elif player1 == "Paper":
+                    if player2 == "Rock":
+                        print(f"Player {self.player1Data.id} win")
+                    else:
+                        print(f"Player {self.player2Data.id} win")
+                elif player1 == "Scissor":
+                    if player2 == "Paper":
+                        print(f"Player {self.player1Data.id} win")
+                    else:
+                        print(f"Player {self.player2Data.id} win")
+
+                self.player2Data.reset()
+                self.player1Data.reset()
 
 
 
 
 
     def resetTurn(self):
-        if self.turnFinished:
-            self.turnFinished = False
+        if self.buttonClicked:
+            self.buttonClicked = False
 
     def getUiPressed(self,ui,mousePos,mousePressed,getObject):
         if not self.timer.activated:
-            if ui.collidepoint(mousePos) and not self.turnFinished:
+            if ui.collidepoint(mousePos) and not self.buttonClicked:
                 if mousePressed[0]:
                     self.getObjectPressed(getObject)
-                    self.evaluateWinner()
-                    self.turnFinished = True
+                    if self.turn == self.player1Data.id:
+                        self.turn += 1
+
+                    if self.turn >= 2:
+                        self.turn = 0
+
+                    self.buttonClicked = True
+                    self.player2Data.reset()
                     self.timer.activate()
 
 
@@ -96,9 +108,7 @@ class Level:
         self.timer.update()
         self.player2Data = self.netWork.send(self.player1Data)
 
-
-        self.players = [self.player1Data, self.player2Data]
-
+        self.evaluateWinner()
 
 
         self.handleUiEvent()

@@ -6,10 +6,12 @@ class Player:
         self.object = object
         self.name = name
 
+
     def setObject(self,object):
         self.object = object
-        print(f"{self.name}: {self.object}")
 
+    def reset(self):
+        self.object = None
 
     def update(self,turn):
         print(self.name)

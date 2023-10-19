@@ -15,7 +15,7 @@ class Game:
         while self.running:
 
             self.clock.tick(60)
-            pg.display.set_caption(f"fps: {str(round(self.clock.get_fps()))}")
+            pg.display.set_caption(f"player: {self.level.player1Data.name}")
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     self.running = False
