@@ -5,7 +5,8 @@ from player import Player
 
 class Server:
     def __init__(self):
-        self.server = "192.168.1.4"
+        self.hostname = socket.gethostname()
+        self.server = socket.gethostbyname(self.hostname)
 
         self.port = 5558
 
