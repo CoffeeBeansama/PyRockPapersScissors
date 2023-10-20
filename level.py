@@ -8,7 +8,7 @@ class Level:
     def __init__(self):
         pg.font.init()
         self.netWork = Network()
-        self.player1Data = int(self.netWork.getPlayer())
+        self.playerID = int(self.netWork.getPlayer())
         self.screen = pg.display.get_surface()
         self.spriteSize = (120,120)
         self.sprites = {
@@ -23,7 +23,7 @@ class Level:
 
         self.font = pg.font.Font("font/DeterminationMonoWebRegular-Z5oq.ttf",32)
 
-        self.turn = 0
+        
         self.buttonClicked = False
         self.timer = Timer(500,self.resetTurn)
 
@@ -40,10 +40,6 @@ class Level:
         self.getUiPressed(self.paper,mousePos,mousePressed,"Paper")
         self.getUiPressed(self.scissors,mousePos,mousePressed,"Scissor")
 
-    def getObjectPressed(self,object):
-        self.game.objects[self.turn] = object
-        print(self.game.objects)
-        
     def evaluateWinner(self):
         pass
 
@@ -58,12 +54,12 @@ class Level:
         if not self.timer.activated:
             if ui.collidepoint(mousePos) and not self.buttonClicked:
                 if mousePressed[0]:
-                    self.getObjectPressed(getObject)
-                    self.turn += 1
-                    if self.turn >= 2:
-                        self.turn = 0
+                   
+                    self.game = self.netWork.send(getObject)
+                    
                     self.buttonClicked = True
                     self.timer.activate()
+
 
 
     def handleUiTexts(self):
@@ -82,14 +78,11 @@ class Level:
 
     def update(self):
         self.timer.update()
-        try:
-            self.game = self.netWork.send("game")
+        self.game = self.netWork.send("get")
 
-            self.handleUiTexts()
-     
-            self.handleUiEvent()
-        except:
-            pass
+        self.handleUiEvent()
+            
+          
 
         
         

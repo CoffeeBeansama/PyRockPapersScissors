@@ -9,7 +9,7 @@ class Main:
         self.running = True
 
         self.level = Level()
-        pg.display.set_caption(f"Player: {self.level.player1Data+1}")
+        pg.display.set_caption(f"Player: {self.level.playerID+1}")
 
 
     def run(self):

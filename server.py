@@ -1,13 +1,13 @@
 import socket
 from _thread import *
 import pickle
-from game import Game
+from gameData import Game
 
 
 class Server:
     def __init__(self):
         self.hostname = socket.gethostname()
-        self.server = "192.168.1.4"
+        self.server = "192.168.1.10"
 
         self.port = 5559
 
@@ -43,7 +43,10 @@ class Server:
                     if not data:
                         break
                     else:
-                        conn.sendall(pickle.dumps(game))
+                        if data != "get":
+                            game.getPlayerObject(player,data)
+
+                        conn.sendall(pickle.dumps(data))
                 else:
                     break
             except:
