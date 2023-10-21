@@ -1,0 +1,1 @@
+playerObjects = ["Rock","Paper","Scissor"]

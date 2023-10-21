@@ -9,7 +9,10 @@ class Main:
         self.running = True
 
         self.level = Level()
-        pg.display.set_caption(f"Player: {self.level.playerID+1}")
+        try:
+            pg.display.set_caption(f"Player: {self.level.playerID+1}")
+        except:
+            pg.display.set_caption("Player not connected")
 
 
     def run(self):

@@ -8,7 +8,10 @@ class Level:
     def __init__(self):
         pg.font.init()
         self.netWork = Network()
-        self.playerID = int(self.netWork.getPlayer())
+        try:
+            self.playerID = int(self.netWork.getPlayer())
+        except:
+            pass
         self.screen = pg.display.get_surface()
         self.spriteSize = (120,120)
         self.sprites = {
@@ -26,6 +29,10 @@ class Level:
         
         self.buttonClicked = False
         self.timer = Timer(500,self.resetTurn)
+
+        self.playerScore = 0
+
+        self.playerPicked = False
 
 
     def handleUiEvent(self):
@@ -54,33 +61,54 @@ class Level:
         if not self.timer.activated:
             if ui.collidepoint(mousePos) and not self.buttonClicked:
                 if mousePressed[0]:
-                   
+                    self.playerPicked = True
                     self.game = self.netWork.send(getObject)
                     
+                    print(f"before: {self.game.objects}")
+                    if self.game.playersPicked():
+                        if self.game.evaluate() == self.playerID:
+                            self.playerScore += 1
+
+                        self.netWork.send(str(self.playerScore))
+                        
+                     
+
+
                     self.buttonClicked = True
                     self.timer.activate()
 
 
 
-    def handleUiTexts(self):
+    def handleUiTexts(self,player1Score,player2Score):
         score1Pos = (30, 400)
         score2Pos = (580, 400)
-        
-        player1score = self.font.render(f"You: ",True,(255,255,255))
-        player2score = self.font.render(f"Player 2: ",True,(255,255,255))
-        notifText = self.font.render("Pick your weapon!",True,(255,255,255))
 
-        notifTextPos = (270,100)
-        self.screen.blit(notifText, notifTextPos)
+        try:
+            player1score = self.font.render(f"You: {player1Score}",True,(255,255,255))
+            player2score = self.font.render(f"Player 2: {player2Score}",True,(255,255,255))
 
-        self.screen.blit(player1score, score1Pos)
-        self.screen.blit(player2score, score2Pos)
+            
+
+            text = "Pick your weapon!"
+            notifText = self.font.render(text,True,(255,255,255))
+
+            notifTextPos = (270,100)
+            self.screen.blit(notifText, notifTextPos)
+
+            self.screen.blit(player1score, score1Pos)
+            self.screen.blit(player2score, score2Pos)
+        except:
+            pass
 
     def update(self):
         self.timer.update()
         self.game = self.netWork.send("get")
 
+        
+
+
         self.handleUiEvent()
+        self.handleUiTexts(self.game.getP1Score(self.playerID),self.game.getP2Score(self.playerID))
             
           
 

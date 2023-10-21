@@ -2,6 +2,7 @@ import socket
 from _thread import *
 import pickle
 from gameData import Game
+from settings import playerObjects
 
 
 class Server:
@@ -43,10 +44,14 @@ class Server:
                     if not data:
                         break
                     else:
+                       
                         if data != "get":
-                            game.getPlayerObject(player,data)
-
-                        conn.sendall(pickle.dumps(data))
+                            if data in playerObjects:
+                                game.getPlayerObject(player,data)
+                            else:
+                                game.updateScores(player,data)
+                        
+                        conn.sendall(pickle.dumps(game))
                 else:
                     break
             except:
