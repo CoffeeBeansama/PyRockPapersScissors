@@ -48,6 +48,13 @@ class Server:
                         if data != "get":
                             if data in playerObjects:
                                 game.getPlayerObject(player,data)
+
+                            elif data == "p1":
+                                game.increasePlayer1Score()
+
+                            elif data == "p2":
+                                game.increasePlayer2Score()
+                                
                             else:
                                 game.updateScores(player,data)
                         

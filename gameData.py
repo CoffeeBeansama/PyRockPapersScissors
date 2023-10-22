@@ -16,12 +16,11 @@ class Game:
         elif playerID == 1:
             self.objects[1] = object
 
-    def updateScores(self,playerID,score):
-        if playerID == 0:
-            self.scores[0] = score
-        elif playerID == 1:
-            self.scores[1] = score
-        
+    def increasePlayer1Score(self):
+        self.scores[0] += 1
+    
+    def increasePlayer2Score(self):
+        self.scores[1] += 1
 
 
        

@@ -67,9 +67,12 @@ class Level:
                     print(f"before: {self.game.objects}")
                     if self.game.playersPicked():
                         if self.game.evaluate() == self.playerID:
-                            self.playerScore += 1
+                            
+                            self.netWork.send("p1")
+                        else:
+                            self.netWork.send("p2")
 
-                        self.netWork.send(str(self.playerScore))
+                        
                         
                      
 
