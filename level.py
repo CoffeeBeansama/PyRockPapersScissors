@@ -62,21 +62,18 @@ class Level:
             if ui.collidepoint(mousePos) and not self.buttonClicked:
                 if mousePressed[0]:
                     self.playerPicked = True
-                    self.game = self.netWork.send(getObject)
                     
-                    print(f"before: {self.game.objects}")
-                    if self.game.playersPicked():
+                    if self.game.haventPicked(self.playerID):
+                        self.game = self.netWork.send(getObject)
+                    
+                    if self.game.bothPlayersPicked():
                         if self.game.evaluate() == self.playerID:
-                            
                             self.netWork.send("p1")
                         else:
                             self.netWork.send("p2")
-
+                
+                        self.netWork.send("reset")
                         
-                        
-                     
-
-
                     self.buttonClicked = True
                     self.timer.activate()
 
@@ -92,7 +89,7 @@ class Level:
 
             
 
-            text = "Pick your weapon!"
+            text = "Pick your weapon!" if self.game.haventPicked(self.playerID) else "Waiting for player 2.."
             notifText = self.font.render(text,True,(255,255,255))
 
             notifTextPos = (270,100)

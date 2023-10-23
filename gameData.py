@@ -6,7 +6,7 @@ class Game:
         self.playerOneFinished = False
         self.playerTwoFinished = False
         self.id = id
-        self.objects = [None,None]
+        self.objects = ["",""]
         self.scores = [0,0]
         self.turn = -1
     
@@ -18,24 +18,29 @@ class Game:
 
     def increasePlayer1Score(self):
         self.scores[0] += 1
+        
     
     def increasePlayer2Score(self):
         self.scores[1] += 1
-
-
-       
-      
-
+        
+   
     def resetObjects(self):
-        for i in range(len(self.objects)):
-            self.objects[i] = None
+        self.objects[0] = ""
+        self.objects[1] = ""
+       
+        
 
- 
+    def haventPicked(self,playerID):
+        if self.objects[playerID] != "":
+            return False
+        return True
+        
+        
 
-    def playersPicked(self):
+    def bothPlayersPicked(self):
         p1 = self.objects[0]
         p2 = self.objects[1]
-        if p1 and p2 is not None:
+        if p1 and p2 != "":
             return True
         return False
 

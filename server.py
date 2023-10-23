@@ -54,10 +54,13 @@ class Server:
 
                             elif data == "p2":
                                 game.increasePlayer2Score()
+
+                            elif data == "reset":
+                                game.resetObjects()
                                 
                             else:
                                 game.updateScores(player,data)
-                        
+                                                   
                         conn.sendall(pickle.dumps(game))
                 else:
                     break
