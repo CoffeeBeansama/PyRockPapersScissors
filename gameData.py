@@ -8,7 +8,7 @@ class Game:
         self.id = id
         self.objects = ["",""]
         self.scores = [0,0]
-        self.turn = -1
+       
     
     def getPlayerObject(self,playerID,object):
         if playerID == 0:
@@ -78,8 +78,6 @@ class Game:
             else:
                 self.winner = 1
             
-        
-        print(self.objects)
         return self.winner
     
         
