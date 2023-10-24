@@ -2,13 +2,13 @@ import socket
 from _thread import *
 import pickle
 from gameData import Game
-from settings import playerObjects
+from settings import playerObjects, server
 
 
 class Server:
     def __init__(self):
         self.hostname = socket.gethostname()
-        self.server = "192.168.1.10"
+        self.server = server
 
         self.port = 5559
 
