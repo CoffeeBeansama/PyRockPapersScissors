@@ -1,11 +1,12 @@
 import socket
 import pickle
+from settings import server
 
 class Network:
     def __init__(self):
         self.client = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         self.hostname = socket.gethostname()
-        self.server = "192.168.1.10"
+        self.server = server
         self.port = 5559
         self.addr = (self.server,self.port)
         self.player = self.connect()
